@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Theme Editor — Hunt N' Hire</title>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f5f8fc; color: #1e293b; padding: 40px; margin: 0; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    h1 { margin-top: 0; font-family: 'Outfit', sans-serif; }
+    .color-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0; }
+    .color-row label { font-weight: 500; font-size: 15px; }
+    .color-row input[type="color"] { width: 50px; height: 50px; border: none; border-radius: 8px; cursor: pointer; padding: 0; }
+    .btn { background: #F47920; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 24px; width: 100%; font-size: 16px; }
+    .btn:hover { background: #d9650e; }
+    pre { background: #1e293b; color: #f8fafc; padding: 20px; border-radius: 8px; overflow-x: auto; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Easy Theme Editor</h1>
+    <p>Use the color pickers below to change your website's primary colors. When you're done, click "Generate Theme" and copy the code into your <code>styles/hnh.css</code> file!</p>
+    
+    <div id="editor">
+      <div class="color-row">
+        <label>Primary Brand Color (Navy)</label>
+        <input type="color" id="var-navy" value="#1B3D8E">
+      </div>
+      <div class="color-row">
+        <label>Secondary Brand Color (Orange)</label>
+        <input type="color" id="var-orange" value="#F47920">
+      </div>
+      <div class="color-row">
+        <label>Background Color (Light)</label>
+        <input type="color" id="var-bg" value="#f5f8fc">
+      </div>
+      <div class="color-row">
+        <label>Text Color</label>
+        <input type="color" id="var-text" value="#1e293b">
+      </div>
+      
+      <button class="btn" onclick="generateCSS()">Generate CSS Code</button>
+    </div>
+
+    <div id="result" style="display:none; margin-top: 24px;">
+      <h3>Copy and paste this at the top of <code>styles/hnh.css</code>:</h3>
+      <pre id="output"></pre>
+      <button class="btn" style="background:#1B3D8E;" onclick="copyToClipboard()">Copy to Clipboard</button>
+      <button class="btn" style="background:#64748b; margin-top: 8px;" onclick="location.reload()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    function generateCSS() {
+      const navy = document.getElementById('var-navy').value;
+      const orange = document.getElementById('var-orange').value;
+      const bg = document.getElementById('var-bg').value;
+      const text = document.getElementById('var-text').value;
+
+      const css = `:root {
+  /* Brand Colors */
+  --navy: ${navy};
+  --orange: ${orange};
+
+  /* Theme Colors (Light Mode Default) */
+  --bg: ${bg};
+  --text: ${text};
+}`;
+      document.getElementById('output').textContent = css;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>

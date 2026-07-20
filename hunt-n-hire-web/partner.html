@@ -48,7 +48,7 @@
         </p>
       </div>
       <div style="flex: 0 0 auto; text-align: right;">
-        <img src="../assets/images/hunti-board.jpg" alt="Hunti We Are Hiring" style="height: 250px; border-radius: 12px; box-shadow: var(--shadow-lg);">
+        <img src="../assets/images/hunti-board.png" alt="Hunti We Are Hiring" style="height: 250px; border-radius: 12px;">
       </div>
     </div>
   </section>
@@ -81,7 +81,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- ─── RECRUITER PARTNER REGISTRATION FORM ─── -->
   <section class="section">
@@ -128,119 +127,83 @@
                 <input type="checkbox" name="sector" value="English BPO / Customer Service" style="transform:scale(1.15);"> English BPO / Call Center
               </label>
               <label style="font-weight:500; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                <input type="checkbox" name="sector" value="European Languages (German/French)" style="transform:scale(1.15);"> European Languages
+                <input type="checkbox" name="sector" value="Bilingual / Multilingual BPO" style="transform:scale(1.15);"> Bilingual / European Languages
               </label>
               <label style="font-weight:500; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                <input type="checkbox" name="sector" value="IT & Technical Support" style="transform:scale(1.15);"> IT & Tech Support
-              </label>
-              <label style="font-weight:500; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                <input type="checkbox" name="sector" value="Banking, Sales & Telesales" style="transform:scale(1.15);"> Telesales & Banking
+                <input type="checkbox" name="sector" value="Tech Support / IT" style="transform:scale(1.15);"> Technical Support (TSR) / IT
               </label>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="partner-channels">Primary Candidate Sourcing Channels *</label>
-            <input type="text" id="partner-channels" class="form-control" placeholder="E.g., LinkedIn, Facebook groups, Whatsapp networks, active candidate sheets" required>
+            <label for="partner-linkedin">LinkedIn Profile URL</label>
+            <input type="url" id="partner-linkedin" class="form-control" placeholder="https://linkedin.com/in/...">
           </div>
-
-          <div class="form-group">
-            <label for="partner-notes">Tell us more about your sourcing network (Optional)</label>
-            <textarea id="partner-notes" class="form-control" placeholder="Mention any specific languages, regions, or pipelines you excel in sourcing..."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-accent" style="width: 100%; padding:14px; font-size:15px; margin-top:16px;">
-            Submit Partner Registration
-          </button>
+          
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:16px;">Apply to Partner</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- ─── REGISTRATION SUCCESS MODAL ─── -->
-  <div class="modal" id="partner-success-modal">
-    <div class="modal-content" style="max-width: 440px; text-align: center; padding: 40px 24px;">
-      <div style="width:72px; height:72px; border-radius:50%; background-color:var(--success-bg); color:var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 20px;">
-        <span class="material-icons" style="font-size:40px;">handshake</span>
-      </div>
-      <h3 style="font-size:24px; font-family:var(--ff-display); margin-bottom:12px;">Welcome to the Network!</h3>
-      <p style="color:var(--text-sub); font-size:14px; line-height:1.6; margin-bottom:24px;">
-        Your partnership request was registered successfully. Our operations team will review your application and send your recruitment guidelines and platform log access via email.
-      </p>
-      <button class="btn btn-primary" onclick="closePartnerSuccessModal()" style="width: 100%;">Done</button>
-    </div>
-  </div>
-
   <!-- ─── FOOTER ─── -->
   <footer class="footer">
-    <div class="container footer-grid">
+    <div class="container footer-container">
       <div class="footer-brand">
         <img src="../assets/logos/hnh-logo-text.jpg" alt="Hunt N' Hire Logo" style="height: 44px; border-radius: 4px; margin-bottom: 12px;">
-        <p>Premium placement agency specializing in high-paying call center, language, and executive roles for leading multinationals in Egypt.</p>
-        <p style="font-size:12px; color:rgba(255,255,255,0.4);">Important notice: Hunt N' Hire never charges applicants any fees for recruitment screening or placement.</p>
+        <p style="color:var(--text-sub); font-size:14px; max-width:300px;">
+          Egypt's premier recruitment partner network, connecting top talent with multinational BPO and language opportunities.
+        </p>
       </div>
-      
       <div class="footer-links">
-        <h4>Applicants</h4>
-        <ul>
-          <li><a href="jobs.html">Search Jobs</a></li>
-          <li><a href="jobs.html?filter=english">English Accounts</a></li>
-          <li><a href="jobs.html?filter=german">German Accounts</a></li>
-          <li><a href="jobs.html?filter=french">French Accounts</a></li>
+        <h4 style="color:var(--text); margin-bottom:16px;">Quick Links</h4>
+        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px;">
+          <li><a href="index.html" style="color:var(--text-sub); text-decoration:none;">Home</a></li>
+          <li><a href="jobs.html" style="color:var(--text-sub); text-decoration:none;">Search Jobs</a></li>
+          <li><a href="partner.html" style="color:var(--text-sub); text-decoration:none;">Work With Us</a></li>
+          <li><a href="admin.html" style="color:var(--text-sub); text-decoration:none;">Admin Portal</a></li>
         </ul>
       </div>
-      
       <div class="footer-links">
-        <h4>Recruiters & Partners</h4>
-        <ul>
-          <li><a href="partner.html">Work With Us</a></li>
-          <li><a href="admin.html">Partner Dashboard</a></li>
+        <h4 style="color:var(--text); margin-bottom:16px;">Contact Us</h4>
+        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:12px;">
+          <li style="color:var(--text-sub); display:flex; align-items:center; gap:8px;">
+            <span class="material-icons" style="font-size:18px;">email</span> contact@huntnhire.com
+          </li>
+          <li style="color:var(--text-sub); display:flex; align-items:center; gap:8px;">
+            <span class="material-icons" style="font-size:18px;">phone</span> +20 100 123 4567
+          </li>
+          <li style="color:var(--text-sub); display:flex; align-items:center; gap:8px;">
+            <span class="material-icons" style="font-size:18px;">location_on</span> Cairo, Egypt
+          </li>
         </ul>
       </div>
     </div>
-    
-    <div class="container footer-bottom">
-      <div>&copy; 2026 Hunt N' Hire Agency. All rights reserved.</div>
-      <div>Designed for recruitment excellence.</div>
+    <div style="border-top:1px solid var(--border); margin-top:40px; padding-top:20px; text-align:center; color:var(--text-sub); font-size:14px;">
+      &copy; 2026 Hunt N' Hire. All rights reserved.
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="scripts/hnh.js"></script>
-  
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      setupPartnerForm();
+    document.getElementById('partner-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite;">sync</span> Processing...';
+      btn.style.opacity = '0.8';
+      
+      setTimeout(() => {
+        this.innerHTML = `
+          <div style="text-align:center; padding:40px 20px;">
+            <span class="material-icons" style="font-size:64px; color:var(--success); margin-bottom:16px;">check_circle</span>
+            <h3 style="margin-bottom:8px;">Application Submitted!</h3>
+            <p style="color:var(--text-sub);">Thank you for applying. Our partner relations team will review your profile and contact you within 48 hours.</p>
+          </div>
+        `;
+      }, 1500);
     });
-
-    function setupPartnerForm() {
-      const form = document.getElementById('partner-form');
-      if (!form) return;
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const checkedSectors = [];
-        const checkboxes = document.querySelectorAll('input[name="sector"]:checked');
-        checkboxes.forEach(cb => checkedSectors.push(cb.value));
-        
-        if (checkedSectors.length === 0) {
-          alert("Please select at least one sourcing sector.");
-          return;
-        }
-        
-        // Mock submission
-        form.reset();
-        openPartnerSuccessModal();
-      });
-    }
-
-    function openPartnerSuccessModal() {
-      document.getElementById('partner-success-modal').classList.add('active');
-    }
-
-    function closePartnerSuccessModal() {
-      document.getElementById('partner-success-modal').classList.remove('active');
-    }
   </script>
 </body>
 </html>
