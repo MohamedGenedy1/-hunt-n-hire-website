@@ -4,13 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Partner with Us — Hunt N' Hire</title>
-  <meta name="description" content="Join Hunt N' Hire as an independent recruiter partner. Submit candidates, use our professional EGP commission calculator, and earn competitive placement shares.">
+  <meta name="description" content="Join Hunt N' Hire as an independent recruiter partner. Submit candidates, use our professional tools, and earn competitive placement shares.">
   
-  <!-- Material Icons, CDNs for Calculator Sankey Chart, & Stylesheet -->
+  <!-- Material Icons & Stylesheet -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
   <link rel="stylesheet" href="styles/hnh.css">
 </head>
 <body>
@@ -19,8 +16,7 @@
   <header class="navbar">
     <div class="container nav-container">
       <a href="index.html" class="logo">
-        <div class="logo-symbol">H</div>
-        <div class="logo-text">HuntN'<span>Hire</span></div>
+        <img src="../assets/logos/hnh-logo-text.jpg" alt="Hunt N' Hire Logo" style="height: 44px; border-radius: 4px;">
       </a>
       
       <nav class="nav-links" id="nav-links">
@@ -43,12 +39,17 @@
 
   <!-- ─── HERO BANNER ─── -->
   <section style="background-color: var(--navy-pale); padding: 50px 0 30px; transition: var(--transition);">
-    <div class="container">
-      <div class="pitch-badge">Recruitment Partnership Program</div>
-      <h1 style="font-size:36px; font-family:var(--ff-display); margin-bottom:8px;">Earn Placements Commission</h1>
-      <p style="color:var(--text-sub); font-size:15px; max-width:700px;">
-        Monetize your network. Submit qualified candidates for our active multinational BPO and language job vacancies, track validation states, and earn competitive referral fees.
-      </p>
+    <div class="container" style="display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 300px;">
+        <div class="pitch-badge">Recruitment Partnership Program</div>
+        <h1 style="font-size:36px; font-family:var(--ff-display); margin-bottom:8px;">Earn Placements Commission</h1>
+        <p style="color:var(--text-sub); font-size:15px; max-width:700px;">
+          Monetize your network. Submit qualified candidates for our active multinational BPO and language job vacancies, track validation states, and earn competitive referral fees.
+        </p>
+      </div>
+      <div style="flex: 0 0 auto; text-align: right;">
+        <img src="../assets/images/hunti-board.jpg" alt="Hunti We Are Hiring" style="height: 250px; border-radius: 12px; box-shadow: var(--shadow-lg);">
+      </div>
     </div>
   </section>
 
@@ -81,88 +82,6 @@
     </div>
   </section>
 
-  <!-- ─── CALCULATOR TAB SECTION ─── -->
-  <section class="section" id="calculator" style="background-color:var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); transition:var(--transition);">
-    <div class="container">
-      <div style="text-align:center; margin-bottom:40px;">
-        <div class="pitch-badge">Interactive Estimators</div>
-        <h2 style="font-size:32px; margin-bottom:8px;">Recruitment Fee &amp; Earnings Calculator</h2>
-        <p style="color:var(--text-sub); max-width:600px; margin:0 auto; font-size:14px;">Estimate recruitment budgets for corporate hiring clients or calculate your commission share earnings as an independent sourcing partner.</p>
-      </div>
-
-      <!-- Tab Selectors -->
-      <div style="display:flex; justify-content:center; margin-bottom:32px;">
-        <div class="seg-group" style="max-width:440px; width:100%; padding:6px; border-radius:var(--radius-md);">
-          <button class="seg-btn active" id="btn-tab-partner" style="font-size:14px; padding:10px 16px;">
-            <span class="material-icons" style="font-size:16px; vertical-align:middle; margin-right:4px;">payments</span> Recruiter Earnings
-          </button>
-          <button class="seg-btn" id="btn-tab-employer" style="font-size:14px; padding:10px 16px;">
-            <span class="material-icons" style="font-size:16px; vertical-align:middle; margin-right:4px;">business</span> Employer Budget (Sankey Flow)
-          </button>
-        </div>
-      </div>
-
-      <!-- CALCULATOR GRID -->
-      <div class="calculator-section card animate-fade-in" style="padding:32px;">
-        
-        <!-- LEFT: INPUT CONTROLS -->
-        <div class="calc-inputs" id="calc-inputs-container">
-          <!-- Dynamically swapped fields go here -->
-        </div>
-
-        <!-- RIGHT: RESULTS HUD & CHARTS -->
-        <div class="calc-results">
-          
-          <!-- HUD cards for quick values -->
-          <div class="hud-cards" id="hud-cards-container">
-            <!-- Dynamic HUD values -->
-          </div>
-
-          <!-- Dynamic Visualizers (Sankey Chart or Breakdown Table) -->
-          <div id="visualizer-container">
-            <!-- Sankey container (shows under Employer Tab) -->
-            <div id="sankey-view" style="display:none;">
-              <h4 style="font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
-                <span class="material-icons" style="color:var(--navy);">account_tree</span> Sourcing Fee Flow Breakdown (EGP)
-              </h4>
-              <div class="chart-container">
-                <svg id="sankey-svg" style="width:100%; height:100%; min-height:220px;"></svg>
-                <div class="chart-tooltip" id="chart-tooltip" style="position:absolute; display:none; background:rgba(0,0,0,0.8); color:#fff; padding:8px; border-radius:4px; font-size:11px; pointer-events:none; z-index:100;">
-                  <div id="tt-title" style="font-weight:700;"></div>
-                  <div>Amount: <span id="tt-val" style="font-weight:700; color:var(--orange);"></span></div>
-                  <div>Percentage: <span id="tt-pct"></span></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Breakdown Table (shows under Recruiter/Employer Tab) -->
-            <div id="table-view">
-              <h4 style="font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
-                <span class="material-icons" style="color:var(--orange);">receipt_long</span> Detailed Calculation Breakdown
-              </h4>
-              <div class="table-responsive" style="margin-bottom:0; box-shadow:none; border-color:var(--border);">
-                <table class="admin-table" style="font-size:13px;">
-                  <thead>
-                    <tr>
-                      <th>Line Item</th>
-                      <th style="text-align:right;">Per Candidate</th>
-                      <th style="text-align:right;">Total Placements</th>
-                    </tr>
-                  </thead>
-                  <tbody id="breakdown-body">
-                    <!-- Injected rows -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
 
   <!-- ─── RECRUITER PARTNER REGISTRATION FORM ─── -->
   <section class="section">
@@ -256,7 +175,7 @@
   <footer class="footer">
     <div class="container footer-grid">
       <div class="footer-brand">
-        <h3>HuntN'<span>Hire</span></h3>
+        <img src="../assets/logos/hnh-logo-text.jpg" alt="Hunt N' Hire Logo" style="height: 44px; border-radius: 4px; margin-bottom: 12px;">
         <p>Premium placement agency specializing in high-paying call center, language, and executive roles for leading multinationals in Egypt.</p>
         <p style="font-size:12px; color:rgba(255,255,255,0.4);">Important notice: Hunt N' Hire never charges applicants any fees for recruitment screening or placement.</p>
       </div>
@@ -275,7 +194,6 @@
         <h4>Recruiters & Partners</h4>
         <ul>
           <li><a href="partner.html">Work With Us</a></li>
-          <li><a href="partner.html#calculator">Earnings Calculator</a></li>
           <li><a href="admin.html">Partner Dashboard</a></li>
         </ul>
       </div>
@@ -291,534 +209,26 @@
   <script src="scripts/hnh.js"></script>
   
   <script>
-    // --- State and Constants ---
-    let currentTab = 'partner'; // 'partner' or 'employer'
-
-    const calcState = {
-      salary: 20000,
-      positions: 3,
-      level: 'mid',
-      type: 'permanent',
-      industry: 'tech',
-      feeRate: 15,
-      bgCheck: 2500,
-      onboard: 5000,
-      guarantee: 0,
-      vat: 14,
-      partnerShare: 15 // Recruiter commission share: 15%
-    };
-
-    const LEVEL_MULT = { junior: 0.85, mid: 1.0, senior: 1.15, executive: 1.35 };
-    const TYPE_MULT  = { permanent: 1.0, contract: 0.75, freelance: 0.55 };
-
-    // --- DOMContentLoaded Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
-      initTabs();
-      renderInputs();
-      updateCalculator();
       setupPartnerForm();
     });
 
-    // --- Tab Selection Handling ---
-    function initTabs() {
-      const btnPartner = document.getElementById('btn-tab-partner');
-      const btnEmployer = document.getElementById('btn-tab-employer');
-
-      btnPartner.addEventListener('click', () => {
-        if (currentTab === 'partner') return;
-        currentTab = 'partner';
-        btnPartner.classList.add('active');
-        btnEmployer.classList.remove('active');
-        document.getElementById('sankey-view').style.display = 'none';
-        renderInputs();
-        updateCalculator();
-      });
-
-      btnEmployer.addEventListener('click', () => {
-        if (currentTab === 'employer') return;
-        currentTab = 'employer';
-        btnEmployer.classList.add('active');
-        btnPartner.classList.remove('active');
-        document.getElementById('sankey-view').style.display = 'block';
-        renderInputs();
-        updateCalculator();
-        setTimeout(initSankey, 100); // Wait for DOM to adjust size
-      });
-
-      window.addEventListener('resize', () => {
-        if (currentTab === 'employer') {
-          updateCalculator();
-        }
-      });
-    }
-
-    // --- Dynamic Sourcing Inputs Rendering ---
-    function renderInputs() {
-      const container = document.getElementById('calc-inputs-container');
-      
-      if (currentTab === 'partner') {
-        container.innerHTML = `
-          <!-- Recruiter Partner Inputs -->
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-salary">Placed Candidate Monthly Salary</label>
-              <span class="slider-val" id="salary-display">EGP 20,000</span>
-            </div>
-            <input type="range" id="inp-salary" class="calc-range" min="5000" max="80000" step="1000" value="${calcState.salary}">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-positions">Number of Placed Candidates</label>
-              <span class="slider-val" id="pos-display">${calcState.positions}</span>
-            </div>
-            <input type="range" id="inp-positions" class="calc-range" min="1" max="15" step="1" value="${calcState.positions}">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-share">Recruiter Sourcing Share</label>
-              <span class="slider-val" id="share-display">${calcState.partnerShare}%</span>
-            </div>
-            <input type="range" id="inp-share" class="calc-range" min="10" max="30" step="1" value="${calcState.partnerShare}">
-          </div>
-
-          <div class="form-group" style="margin-top:16px;">
-            <label>Placement Seniority Level</label>
-            <div class="seg-group" id="seg-level" style="margin-top:6px;">
-              <button type="button" class="seg-btn ${calcState.level === 'junior' ? 'active' : ''}" data-val="junior">Junior</button>
-              <button type="button" class="seg-btn ${calcState.level === 'mid' ? 'active' : ''}" data-val="mid">Mid-Level</button>
-              <button type="button" class="seg-btn ${calcState.level === 'senior' ? 'active' : ''}" data-val="senior">Senior</button>
-              <button type="button" class="seg-btn ${calcState.level === 'executive' ? 'active' : ''}" data-val="executive">Executive</button>
-            </div>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <!-- Employer Cost Budget Inputs -->
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-salary">Candidate Monthly Salary</label>
-              <span class="slider-val" id="salary-display">EGP 20,000</span>
-            </div>
-            <input type="range" id="inp-salary" class="calc-range" min="5000" max="80000" step="1000" value="${calcState.salary}">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-fee">Agency Contract Fee Rate</label>
-              <span class="slider-val" id="fee-display">${calcState.feeRate}%</span>
-            </div>
-            <input type="range" id="inp-fee" class="calc-range" min="8" max="25" step="0.5" value="${calcState.feeRate}">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-header">
-              <label for="inp-positions">Positions Needed</label>
-              <span class="slider-val" id="pos-display">${calcState.positions}</span>
-            </div>
-            <input type="range" id="inp-positions" class="calc-range" min="1" max="15" step="1" value="${calcState.positions}">
-          </div>
-
-          <div class="form-group" style="margin-top:16px;">
-            <label>Placement Level</label>
-            <div class="seg-group" id="seg-level" style="margin-top:6px;">
-              <button type="button" class="seg-btn ${calcState.level === 'junior' ? 'active' : ''}" data-val="junior">Junior</button>
-              <button type="button" class="seg-btn ${calcState.level === 'mid' ? 'active' : ''}" data-val="mid">Mid-Level</button>
-              <button type="button" class="seg-btn ${calcState.level === 'senior' ? 'active' : ''}" data-val="senior">Senior</button>
-              <button type="button" class="seg-btn ${calcState.level === 'executive' ? 'active' : ''}" data-val="executive">Executive</button>
-            </div>
-          </div>
-
-          <div class="form-row" style="margin-top:16px;">
-            <div class="form-group">
-              <label for="inp-bgcheck">Background Check (EGP)</label>
-              <input type="number" id="inp-bgcheck" class="form-control" style="padding:8px 12px;" value="${calcState.bgCheck}">
-            </div>
-            <div class="form-group">
-              <label for="inp-onboard">Onboarding Cost (EGP)</label>
-              <input type="number" id="inp-onboard" class="form-control" style="padding:8px 12px;" value="${calcState.onboard}">
-            </div>
-          </div>
-        `;
-      }
-
-      bindCalculatorEvents();
-    }
-
-    // --- Bind DOM events inside calculator ---
-    function bindCalculatorEvents() {
-      // Salary slider
-      const salSlider = document.getElementById('inp-salary');
-      const salDisp = document.getElementById('salary-display');
-      salSlider.addEventListener('input', (e) => {
-        calcState.salary = parseInt(e.target.value);
-        salDisp.textContent = "EGP " + calcState.salary.toLocaleString('en-EG');
-        updateCalculator();
-      });
-
-      // Positions slider
-      const posSlider = document.getElementById('inp-positions');
-      const posDisp = document.getElementById('pos-display');
-      posSlider.addEventListener('input', (e) => {
-        calcState.positions = parseInt(e.target.value);
-        posDisp.textContent = calcState.positions;
-        updateCalculator();
-      });
-
-      // Tab specific sliders
-      if (currentTab === 'partner') {
-        const shareSlider = document.getElementById('inp-share');
-        const shareDisp = document.getElementById('share-display');
-        shareSlider.addEventListener('input', (e) => {
-          calcState.partnerShare = parseInt(e.target.value);
-          shareDisp.textContent = calcState.partnerShare + "%";
-          updateCalculator();
-        });
-      } else {
-        const feeSlider = document.getElementById('inp-fee');
-        const feeDisp = document.getElementById('fee-display');
-        feeSlider.addEventListener('input', (e) => {
-          calcState.feeRate = parseFloat(e.target.value);
-          feeDisp.textContent = calcState.feeRate.toFixed(1) + "%";
-          updateCalculator();
-        });
-
-        document.getElementById('inp-bgcheck').addEventListener('input', (e) => {
-          calcState.bgCheck = parseFloat(e.target.value) || 0;
-          updateCalculator();
-        });
-
-        document.getElementById('inp-onboard').addEventListener('input', (e) => {
-          calcState.onboard = parseFloat(e.target.value) || 0;
-          updateCalculator();
-        });
-      }
-
-      // Seniority Seg Group
-      const segGroup = document.getElementById('seg-level');
-      segGroup.querySelectorAll('.seg-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          segGroup.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          calcState.level = btn.dataset.val;
-          updateCalculator();
-        });
-      });
-    }
-
-    // --- Master Calculate Engine ---
-    function updateCalculator() {
-      // 1. Math formulas
-      const baseSalary = calcState.salary;
-      const annualSalary = baseSalary * 12;
-      const lvlMultiplier = LEVEL_MULT[calcState.level] || 1.0;
-      
-      // Compute standard agency placement contract values
-      // standard fee is contract fee (usually 15% default or slider rate)
-      const agencyFeeRate = calcState.feeRate / 100;
-      const standardPartnerFeeRate = 0.125; // standard BPO agency contracts average 12.5% agency fee
-      
-      let computed = {};
-
-      if (currentTab === 'partner') {
-        // Recruiter partner tab math
-        const singleAgencyFee = annualSalary * standardPartnerFeeRate * lvlMultiplier;
-        const singleCommShare = singleAgencyFee * (calcState.partnerShare / 100);
-        const totalComm = singleCommShare * calcState.positions;
-        const totalAgencyFees = singleAgencyFee * calcState.positions;
-
-        computed = {
-          singleCommShare,
-          totalComm,
-          singleAgencyFee,
-          totalAgencyFees,
-          baseSalary,
-          annualSalary
-        };
-
-        // Render HUD
-        const hudContainer = document.getElementById('hud-cards-container');
-        hudContainer.innerHTML = `
-          <div class="hud-card accent">
-            <div class="hud-card-val">EGP <span id="hud-total-earn">0</span></div>
-            <div class="hud-card-label">Your Sourcing Commission</div>
-          </div>
-          <div class="hud-card">
-            <div class="hud-card-val">EGP <span id="hud-per-placement">0</span></div>
-            <div class="hud-card-label">Per Placement (Share: ${calcState.partnerShare}%)</div>
-          </div>
-        `;
-
-        animCount('hud-total-earn', totalComm, '');
-        animCount('hud-per-placement', singleCommShare, '');
-
-        // Render Table
-        const tbody = document.getElementById('breakdown-body');
-        tbody.innerHTML = `
-          <tr>
-            <td>Monthly Candidate Salary</td>
-            <td style="text-align:right;">EGP ${baseSalary.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">—</td>
-          </tr>
-          <tr>
-            <td>Annual Candidate Salary (12 months)</td>
-            <td style="text-align:right;">EGP ${annualSalary.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${(annualSalary * calcState.positions).toLocaleString('en-EG')}</td>
-          </tr>
-          <tr>
-            <td>Client Agency Contract Fee (12.5% * Level Multiplier)</td>
-            <td style="text-align:right;">EGP ${singleAgencyFee.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${totalAgencyFees.toLocaleString('en-EG')}</td>
-          </tr>
-          <tr style="font-weight:700; color:var(--orange-dark); background-color:var(--orange-pale);">
-            <td>💰 Partner Commission (${calcState.partnerShare}% Sourcing Share)</td>
-            <td style="text-align:right;">EGP ${singleCommShare.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${totalComm.toLocaleString('en-EG')}</td>
-          </tr>
-        `;
-
-      } else {
-        // Employer cost budget tab math
-        const singleGrossFee = annualSalary * agencyFeeRate * lvlMultiplier;
-        const singleNetFee = singleGrossFee; // no guaranteed discounts slider in simplified screen
-        const singleVat = singleNetFee * (calcState.vat / 100);
-        const singleFeeWithVat = singleNetFee + singleVat;
-        const singleExtras = calcState.bgCheck + calcState.onboard;
-        const costPerHire = singleFeeWithVat + singleExtras;
-        const totalCost = costPerHire * calcState.positions;
-
-        computed = {
-          costPerHire,
-          totalCost,
-          singleFeeWithVat,
-          singleGrossFee,
-          singleVat
-        };
-
-        // Render HUD
-        const hudContainer = document.getElementById('hud-cards-container');
-        hudContainer.innerHTML = `
-          <div class="hud-card">
-            <div class="hud-card-val">EGP <span id="hud-cost-per-hire">0</span></div>
-            <div class="hud-card-label">Cost Per Hire (incl. VAT)</div>
-          </div>
-          <div class="hud-card accent">
-            <div class="hud-card-val">EGP <span id="hud-total-cost">0</span></div>
-            <div class="hud-card-label">Total hiring Budget (${calcState.positions} pos.)</div>
-          </div>
-        `;
-
-        animCount('hud-cost-per-hire', costPerHire, '');
-        animCount('hud-total-cost', totalCost, '');
-
-        // Render Table
-        const tbody = document.getElementById('breakdown-body');
-        tbody.innerHTML = `
-          <tr>
-            <td>Monthly Candidate Salary</td>
-            <td style="text-align:right;">EGP ${baseSalary.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">—</td>
-          </tr>
-          <tr>
-            <td>Gross Agency Fee (${calcState.feeRate}% of Annual Salary)</td>
-            <td style="text-align:right;">EGP ${singleGrossFee.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${(singleGrossFee * calcState.positions).toLocaleString('en-EG')}</td>
-          </tr>
-          <tr>
-            <td>VAT on Agency Fee (${calcState.vat}%)</td>
-            <td style="text-align:right;">EGP ${singleVat.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${(singleVat * calcState.positions).toLocaleString('en-EG')}</td>
-          </tr>
-          <tr>
-            <td>Screening Extras (Background Check & Onboarding)</td>
-            <td style="text-align:right;">EGP ${singleExtras.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${(singleExtras * calcState.positions).toLocaleString('en-EG')}</td>
-          </tr>
-          <tr style="font-weight:700; color:var(--navy); background-color:var(--navy-pale);">
-            <td>💼 Total Employer Hiring Cost</td>
-            <td style="text-align:right;">EGP ${costPerHire.toLocaleString('en-EG')}</td>
-            <td style="text-align:right;">EGP ${totalCost.toLocaleString('en-EG')}</td>
-          </tr>
-        `;
-
-        // Update Sankey visual
-        initSankey(computed);
-      }
-    }
-
-    // --- AnimeJS Counter Helper ---
-    const _prevVals = {};
-    function animCount(id, target, prefix = '') {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const prev = _prevVals[id] ?? 0;
-      _prevVals[id] = target;
-      const obj = { val: prev };
-      anime({
-        targets: obj,
-        val: target,
-        duration: 600,
-        easing: 'easeOutExpo',
-        update() { el.textContent = prefix + Math.round(obj.val).toLocaleString('en-EG'); },
-        complete() { el.textContent = prefix + Math.round(target).toLocaleString('en-EG'); }
-      });
-    }
-
-    // --- Sankey Chart Drawing (Employer Tab) ---
-    function initSankey(r) {
-      if (currentTab !== 'employer') return;
-      
-      const svg = document.getElementById('sankey-svg');
-      if (!svg) return;
-      const W = svg.clientWidth  || 460;
-      const H = svg.clientHeight || 220;
-      svg.innerHTML = '';
-
-      if (!r || r.totalCost <= 0) return;
-
-      const COLORS = {
-        salary:  '#1B3D8E', // Navy
-        agency:  '#F47920', // Orange
-        tax:     '#e2e8f0', // Gray/Border
-        extras:  '#64748b', // TextSub
-        total:   '#10b981'  // Success
-      };
-
-      const nodes = [
-        { id: 0, name: 'Annual Salary' },
-        { id: 1, name: 'Net Agency Fee' },
-        { id: 2, name: 'VAT (14%)' },
-        { id: 3, name: 'Background check / Sourcing Extras' },
-        { id: 4, name: 'Total Employer Sourcing cost' }
-      ];
-
-      // Sizing calculation links values
-      const annualSalarySum = calcState.salary * 12 * calcState.positions;
-      const agencyFeeSum = r.singleGrossFee * calcState.positions;
-      const vatSum = r.singleVat * calcState.positions;
-      const extrasSum = (calcState.bgCheck + calcState.onboard) * calcState.positions;
-
-      const links = [
-        { source: 0, target: 1, value: Math.max(agencyFeeSum, 1) },
-        { source: 0, target: 2, value: Math.max(vatSum, 1) },
-        { source: 0, target: 3, value: Math.max(extrasSum, 1) },
-        { source: 1, target: 4, value: Math.max(agencyFeeSum, 1) },
-        { source: 2, target: 4, value: Math.max(vatSum, 1) },
-        { source: 3, target: 4, value: Math.max(extrasSum, 1) }
-      ];
-
-      const nodeColors = [COLORS.salary, COLORS.agency, COLORS.tax, COLORS.extras, COLORS.total];
-
-      const sankeyGen = d3.sankey()
-        .nodeId(d => d.id)
-        .nodeWidth(14)
-        .nodePadding(14)
-        .extent([[10, 10], [W - 10, H - 10]]);
-
-      let graph;
-      try {
-        graph = sankeyGen({ 
-          nodes: nodes.map(d => ({...d})), 
-          links: links.map(d => ({...d})) 
-        });
-      } catch(e) { 
-        console.warn('Sankey error rendering:', e); 
-        return; 
-      }
-
-      const s = d3.select(svg);
-      const defs = s.append('defs');
-
-      // Create Gradients
-      graph.links.forEach((lnk, i) => {
-        const grad = defs.append('linearGradient')
-          .attr('id', `lg-partner-${i}`)
-          .attr('gradientUnits', 'userSpaceOnUse')
-          .attr('x1', lnk.source.x1).attr('x2', lnk.target.x0);
-        
-        grad.append('stop').attr('offset', '0%').attr('stop-color', nodeColors[lnk.source.index]).attr('stop-opacity', 0.4);
-        grad.append('stop').attr('offset', '100%').attr('stop-color', nodeColors[lnk.target.index]).attr('stop-opacity', 0.4);
-      });
-
-      // Render links
-      s.append('g').selectAll('path')
-        .data(graph.links)
-        .join('path')
-        .attr('d', d3.sankeyLinkHorizontal())
-        .attr('fill', 'none')
-        .attr('stroke', (d, i) => `url(#lg-partner-${i})`)
-        .attr('stroke-width', d => Math.max(1, d.width))
-        .attr('stroke-opacity', 0.6)
-        .style('cursor', 'pointer')
-        .on('mousemove', function(event, d) {
-          const tt = document.getElementById('chart-tooltip');
-          const rect = svg.getBoundingClientRect();
-          tt.style.left = (event.clientX - rect.left + 12) + 'px';
-          tt.style.top  = (event.clientY - rect.top  - 40) + 'px';
-          document.getElementById('tt-title').textContent = `${d.source.name} → ${d.target.name}`;
-          document.getElementById('tt-val').textContent   = "EGP " + Math.round(d.value).toLocaleString('en-EG');
-          document.getElementById('tt-pct').textContent   = (d.value / r.totalCost * 100).toFixed(1) + '%';
-          tt.style.display = 'block';
-        })
-        .on('mouseleave', () => document.getElementById('chart-tooltip').style.display = 'none');
-
-      // Render nodes
-      s.append('g').selectAll('rect')
-        .data(graph.nodes)
-        .join('rect')
-        .attr('x', d => d.x0)
-        .attr('y', d => d.y0)
-        .attr('height', d => Math.max(1, d.y1 - d.y0))
-        .attr('width', d => d.x1 - d.x0)
-        .attr('fill', (d, i) => nodeColors[i])
-        .attr('rx', 3);
-
-      // Render Node Labels (Text)
-      s.append('g')
-        .selectAll('text')
-        .data(graph.nodes)
-        .join('text')
-        .attr('x', d => d.x0 < W / 2 ? d.x1 + 6 : d.x0 - 6)
-        .attr('y', d => (d.y0 + d.y1) / 2)
-        .attr('dy', '0.35em')
-        .attr('text-anchor', d => d.x0 < W / 2 ? 'start' : 'end')
-        .style('font-family', 'Inter, sans-serif')
-        .style('font-size', '9px')
-        .style('font-weight', '600')
-        .style('fill', 'var(--text)')
-        .text(d => d.name.length > 20 ? d.name.slice(0, 18) + '...' : d.name);
-    }
-
-    // --- Recruiter Partner Form Submission ---
     function setupPartnerForm() {
       const form = document.getElementById('partner-form');
+      if (!form) return;
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-
-        // Get sectors checked
+        
         const checkedSectors = [];
         const checkboxes = document.querySelectorAll('input[name="sector"]:checked');
         checkboxes.forEach(cb => checkedSectors.push(cb.value));
-
+        
         if (checkedSectors.length === 0) {
           alert("Please select at least one sourcing sector.");
           return;
         }
-
-        const partnerReq = {
-          name: document.getElementById('partner-name').value,
-          phone: document.getElementById('partner-phone').value,
-          email: document.getElementById('partner-email').value,
-          experience: document.getElementById('partner-exp').value,
-          specialties: checkedSectors.join(', '),
-          channels: document.getElementById('partner-channels').value,
-          message: document.getElementById('partner-notes').value
-        };
-
-        DB.savePartnerRequest(partnerReq);
-
-        // Reset form & show modal
+        
+        // Mock submission
         form.reset();
         openPartnerSuccessModal();
       });
