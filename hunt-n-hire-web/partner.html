@@ -224,12 +224,6 @@
       }
       
       setTimeout(() => {
-      const originalText = btn.innerHTML;
-      
-      btn.innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite;">sync</span> Processing...';
-      btn.style.opacity = '0.8';
-      
-      setTimeout(() => {
         this.innerHTML = `
           <div style="text-align:center; padding:40px 20px;">
             <span class="material-icons" style="font-size:64px; color:var(--success); margin-bottom:16px;">check_circle</span>
