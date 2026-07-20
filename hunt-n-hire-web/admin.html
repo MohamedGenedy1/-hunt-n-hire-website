@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Hunt N' Hire</title>
+  <meta name="description" content="Secure internal administration panel for managing candidate applications, recruiter registrations, and data exports.">
+  
+  <!-- Material Icons & Stylesheet -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="styles/hnh.css">
+</head>
+<body>
+
+  <!-- ─── HEADER / NAVIGATION ─── -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-symbol">H</div>
+        <div class="logo-text">HuntN'<span>Hire</span></div>
+      </a>
+      
+      <nav class="nav-links" id="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="jobs.html" class="nav-link">Search Jobs</a>
+        <a href="partner.html" class="nav-link">Work With Us</a>
+      </nav>
+      
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <span class="material-icons">dark_mode</span>
+        </button>
+        <button class="btn btn-secondary" id="logout-btn" style="display:none; padding:8px 12px; font-size:13px;">
+          <span class="material-icons" style="font-size:16px; vertical-align:middle;">logout</span> Log Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── PASSCODE GATE ─── -->
+  <div class="container" id="passcode-gate">
+    <div class="card passcode-container">
+      <div style="width:64px; height:64px; border-radius:50%; background-color:var(--navy-pale); color:var(--navy); display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+        <span class="material-icons" style="font-size:36px;">security</span>
+      </div>
+      <h2 style="font-size:24px; font-family:var(--ff-display); margin-bottom:8px;">Admin Passcode</h2>
+      <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">This page is password protected. Enter the admin passcode to unlock the submissions.</p>
+      
+      <form id="passcode-form">
+        <div class="form-group">
+          <input type="password" id="passcode-input" class="form-control" placeholder="Enter Passcode..." style="text-align:center;" required autofocus>
+          <div id="passcode-error" style="color:var(--danger); font-size:12px; margin-top:8px; font-weight:600; display:none;">
+            Invalid passcode. Hint: HNH2026
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding:11px;">Unlock Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── DASHBOARD WORKSPACE (HIDDEN BY DEFAULT) ─── -->
+  <main class="container section" id="admin-workspace" style="display:none; padding-top:40px;">
+    
+    <!-- Dashboard Header -->
+    <div class="admin-header">
+      <div>
+        <div class="pitch-badge">Agency Operations</div>
+        <h1 style="font-size:32px; font-family:var(--ff-display);">Operations Dashboard</h1>
+        <p style="color:var(--text-sub); font-size:14px; margin-top:2px;">Review placed job applicants and recruiter partnership requests stored locally.</p>
+      </div>
+      
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="exportToCSV('candidates')" style="padding: 10px 16px; font-size:13px;">
+          <span class="material-icons" style="font-size:16px;">download</span> Export Candidates CSV
+        </button>
+        <button class="btn btn-secondary" onclick="exportToCSV('partners')" style="padding: 10px 16px; font-size:13px;">
+          <span class="material-icons" style="font-size:16px;">download</span> Export Partners CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Workspace Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" id="tab-candidates-btn">
+        Candidate Applications (<span id="count-candidates">0</span>)
+      </button>
+      <button class="admin-tab" id="tab-partners-btn">
+        Recruiter Partners (<span id="count-partners">0</span>)
+      </button>
+    </div>
+
+    <!-- Candidate Applications Workspace Panel -->
+    <div id="panel-candidates" class="animate-fade-in">
+      <div class="table-responsive">
+        <table class="admin-table" id="candidates-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Applicant Name</th>
+              <th>Contact Info</th>
+              <th>Applied Vacancy</th>
+              <th>Profile Info</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="candidates-tbody">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recruiter Partners Workspace Panel -->
+    <div id="panel-partners" class="animate-fade-in" style="display:none;">
+      <div class="table-responsive">
+        <table class="admin-table" id="partners-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Recruiter Name</th>
+              <th>Contact Info</th>
+              <th>Experience</th>
+              <th>Sectors & Channels</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="partners-tbody">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer" style="margin-top:100px;">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <h3>HuntN'<span>Hire</span></h3>
+        <p>Premium placement agency specializing in high-paying call center, language, and executive roles for leading multinationals in Egypt.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Applicants</h4>
+        <ul>
+          <li><a href="jobs.html">Search Jobs</a></li>
+          <li><a href="jobs.html?filter=english">English Accounts</a></li>
+          <li><a href="jobs.html?filter=german">German Accounts</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Recruiters & Partners</h4>
+        <ul>
+          <li><a href="partner.html">Work With Us</a></li>
+          <li><a href="partner.html#calculator">Earnings Calculator</a></li>
+          <li><a href="admin.html">Partner Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <div>&copy; 2026 Hunt N' Hire Agency. All rights reserved.</div>
+      <div>Designed for recruitment excellence.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="scripts/hnh.js"></script>
+  
+  <script>
+    // Constants
+    const CORRECT_PASSCODE = "HNH2026";
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthentication();
+      setupPasscodeForm();
+      setupTabs();
+    });
+
+    // Check if session authentication is already active
+    function checkAuthentication() {
+      const isAuth = sessionStorage.getItem('hnh_admin_authenticated') === 'true';
+      const gate = document.getElementById('passcode-gate');
+      const workspace = document.getElementById('admin-workspace');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      if (isAuth) {
+        gate.style.display = 'none';
+        workspace.style.display = 'block';
+        logoutBtn.style.display = 'inline-block';
+        renderDashboardData();
+      } else {
+        gate.style.display = 'block';
+        workspace.style.display = 'none';
+        logoutBtn.style.display = 'none';
+      }
+    }
+
+    // Set up Passcode Authentication logic
+    function setupPasscodeForm() {
+      const form = document.getElementById('passcode-form');
+      const errorDiv = document.getElementById('passcode-error');
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entered = document.getElementById('passcode-input').value.trim();
+        
+        if (entered.toUpperCase() === CORRECT_PASSCODE) {
+          sessionStorage.setItem('hnh_admin_authenticated', 'true');
+          errorDiv.style.display = 'none';
+          document.getElementById('passcode-input').value = '';
+          checkAuthentication();
+        } else {
+          errorDiv.style.display = 'block';
+          errorDiv.classList.add('animate-fade-in');
+        }
+      });
+
+      // Log out
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        sessionStorage.removeItem('hnh_admin_authenticated');
+        checkAuthentication();
+      });
+    }
+
+    // Tab toggling logic inside Workspace
+    function setupTabs() {
+      const btnCand = document.getElementById('tab-candidates-btn');
+      const btnPart = document.getElementById('tab-partners-btn');
+      const panelCand = document.getElementById('panel-candidates');
+      const panelPart = document.getElementById('panel-partners');
+
+      btnCand.addEventListener('click', () => {
+        btnCand.classList.add('active');
+        btnPart.classList.remove('active');
+        panelCand.style.display = 'block';
+        panelPart.style.display = 'none';
+      });
+
+      btnPart.addEventListener('click', () => {
+        btnPart.classList.add('active');
+        btnCand.classList.remove('active');
+        panelPart.style.display = 'block';
+        panelCand.style.display = 'none';
+      });
+    }
+
+    // Render Data from LocalStorage
+    function renderDashboardData() {
+      const candidates = DB.getApplications();
+      const partners = DB.getPartnerRequests();
+
+      // Update counters
+      document.getElementById('count-candidates').textContent = candidates.length;
+      document.getElementById('count-partners').textContent = partners.length;
+
+      // 1. Render Candidates Table
+      const candTbody = document.getElementById('candidates-tbody');
+      if (candidates.length === 0) {
+        candTbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:32px; color:var(--text-sub);">
+              No candidate applications found in LocalStorage.
+            </td>
+          </tr>
+        `;
+      } else {
+        candTbody.innerHTML = candidates.map(c => {
+          const dateStr = new Date(c.timestamp).toLocaleDateString('en-EG', {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+          });
+          
+          // CV button
+          let cvAction = '';
+          if (c.cvBase64 && c.cvName) {
+            cvAction = `<button class="btn btn-secondary" onclick="downloadCV('${c.cvName}', '${c.cvBase64}')" style="padding:6px 10px; font-size:12px; display:inline-flex; align-items:center; gap:4px;">
+              <span class="material-icons" style="font-size:14px;">download</span> CV
+            </button>`;
+          } else if (c.cvName) {
+            cvAction = `<span style="font-size:12px; color:var(--text-sub); font-style:italic;">${c.cvName}</span>`;
+          } else {
+            cvAction = `<span style="font-size:12px; color:var(--danger);">No file</span>`;
+          }
+
+          return `
+            <tr>
+              <td><span style="font-size:12px; white-space:nowrap; color:var(--text-sub);">${dateStr}</span></td>
+              <td><strong>${c.name}</strong></td>
+              <td>
+                <div style="font-size:13px; font-weight:500;">${c.phone}</div>
+                <div style="font-size:12px; color:var(--text-sub);">${c.email}</div>
+              </td>
+              <td>
+                <div style="font-size:13px; font-weight:700; color:var(--navy);">${c.jobTitle}</div>
+                <div style="font-size:11px; font-weight:600; color:var(--text-sub);">Client: ${c.companyName || 'BPO'}</div>
+              </td>
+              <td>
+                <div style="font-size:12px;"><strong>Grad:</strong> ${c.gradStatus}</div>
+                <div style="font-size:12px;"><strong>English:</strong> ${c.englishLevel}</div>
+                <div style="font-size:12px;"><strong>Exp:</strong> ${c.experience || 'None'}</div>
+              </td>
+              <td>
+                <div class="actions">
+                  ${cvAction}
+                  <button class="btn btn-secondary" onclick="deleteRecord('candidate', ${c.id})" style="padding:6px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg); border-radius:5px;" aria-label="Delete">
+                    <span class="material-icons" style="font-size:16px;">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            ${c.message ? `
+              <tr style="background-color:var(--bg);">
+                <td colspan="6" style="padding: 10px 16px; font-size:12px; border-bottom:1px solid var(--border);">
+                  <strong style="color:var(--orange-dark);">Candidate Cover Note:</strong> "${c.message}"
+                </td>
+              </tr>
+            ` : ''}
+          `;
+        }).join('');
+      }
+
+      // 2. Render Partners Table
+      const partTbody = document.getElementById('partners-tbody');
+      if (partners.length === 0) {
+        partTbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:32px; color:var(--text-sub);">
+              No recruiter partner requests found in LocalStorage.
+            </td>
+          </tr>
+        `;
+      } else {
+        partTbody.innerHTML = partners.map(p => {
+          const dateStr = new Date(p.timestamp).toLocaleDateString('en-EG', {
+            month: 'short', day: 'numeric'
+          });
+
+          return `
+            <tr>
+              <td><span style="font-size:12px; color:var(--text-sub);">${dateStr}</span></td>
+              <td><strong>${p.name}</strong></td>
+              <td>
+                <div style="font-size:13px; font-weight:500;">${p.phone}</div>
+                <div style="font-size:12px; color:var(--text-sub);">${p.email}</div>
+              </td>
+              <td><span style="font-size:13px; font-weight:600; color:var(--navy);">${p.experience}</span></td>
+              <td>
+                <div style="font-size:12px;"><strong>Sectors:</strong> ${p.specialties}</div>
+                <div style="font-size:12px; color:var(--text-sub);"><strong>Channels:</strong> ${p.channels}</div>
+              </td>
+              <td>
+                <button class="btn btn-secondary" onclick="deleteRecord('partner', ${p.id})" style="padding:6px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg); border-radius:5px;" aria-label="Delete">
+                  <span class="material-icons" style="font-size:16px;">delete</span>
+                </button>
+              </td>
+            </tr>
+            ${p.message ? `
+              <tr style="background-color:var(--bg);">
+                <td colspan="6" style="padding: 10px 16px; font-size:12px; border-bottom:1px solid var(--border);">
+                  <strong style="color:var(--orange-dark);">Recruitment Pitch:</strong> "${p.message}"
+                </td>
+              </tr>
+            ` : ''}
+          `;
+        }).join('');
+      }
+    }
+
+    // Action: CV File Downloader (Base64 to Browser Download)
+    window.downloadCV = function(filename, base64Data) {
+      try {
+        const link = document.createElement('a');
+        link.href = base64Data;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err) {
+        alert("Failed to download CV: Sourced file might be corrupted or oversized.");
+        console.error(err);
+      }
+    };
+
+    // Action: Delete Records
+    window.deleteRecord = function(type, id) {
+      if (!confirm(`Are you sure you want to delete this ${type} record?`)) return;
+
+      if (type === 'candidate') {
+        DB.deleteApplication(id);
+      } else {
+        DB.deletePartnerRequest(id);
+      }
+      
+      renderDashboardData();
+    };
+
+    // Action: CSV Exporter
+    window.exportToCSV = function(type) {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      let data = [];
+      let filename = "";
+
+      if (type === 'candidates') {
+        data = DB.getApplications();
+        filename = "hnh_candidates_export.csv";
+        csvContent += "Date Applied,Name,Phone,Email,Applied Job,Graduation Status,Experience,English Level,Message\n";
+        
+        data.forEach(c => {
+          const row = [
+            new Date(c.timestamp).toLocaleDateString('en-EG'),
+            c.name,
+            c.phone,
+            c.email,
+            c.jobTitle,
+            c.gradStatus,
+            c.experience || 'None',
+            c.englishLevel,
+            c.message ? c.message.replace(/,/g, ' ') : ''
+          ].map(v => `"${v}"`).join(",");
+          csvContent += row + "\n";
+        });
+      } else {
+        data = DB.getPartnerRequests();
+        filename = "hnh_recruiters_export.csv";
+        csvContent += "Date Registered,Name,Phone,Email,Experience,Preferred Sectors,Sourcing Channels,Pitch Notes\n";
+
+        data.forEach(p => {
+          const row = [
+            new Date(p.timestamp).toLocaleDateString('en-EG'),
+            p.name,
+            p.phone,
+            p.email,
+            p.experience,
+            p.specialties,
+            p.channels.replace(/,/g, ' '),
+            p.message ? p.message.replace(/,/g, ' ') : ''
+          ].map(v => `"${v}"`).join(",");
+          csvContent += row + "\n";
+        });
+      }
+
+      if (data.length === 0) {
+        alert("No records available to export.");
+        return;
+      }
+
+      // Encode and Trigger Download
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  </script>
+</body>
+</html>
