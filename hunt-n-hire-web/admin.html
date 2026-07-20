@@ -9,6 +9,9 @@
   <!-- Material Icons & Stylesheet -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="styles/hnh.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -246,10 +249,10 @@
       });
     }
 
-    // Render Data from LocalStorage
-    function renderDashboardData() {
-      const candidates = DB.getApplications();
-      const partners = DB.getPartnerRequests();
+    // Render Data from Firebase
+    async function renderDashboardData() {
+      const candidates = await DB.getApplications();
+      const partners = await DB.getPartnerRequests();
 
       // Update counters
       document.getElementById('count-candidates').textContent = candidates.length;

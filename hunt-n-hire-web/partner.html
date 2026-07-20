@@ -9,6 +9,9 @@
   <!-- Material Icons & Stylesheet -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="styles/hnh.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -186,9 +189,30 @@
 
   <script src="scripts/hnh.js"></script>
   <script>
-    document.getElementById('partner-form').addEventListener('submit', function(e) {
+    document.getElementById('partner-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      const req = {
+        name: document.getElementById('partner-name').value,
+        phone: document.getElementById('partner-phone').value,
+        email: document.getElementById('partner-email').value,
+        experience: document.getElementById('partner-exp').value,
+        linkedin: document.getElementById('partner-linkedin').value,
+        sectors: Array.from(document.querySelectorAll('input[name="sector"]:checked')).map(cb => cb.value)
+      };
+
       const btn = this.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite;">sync</span> Processing...';
+      btn.style.opacity = '0.8';
+      btn.disabled = true;
+      
+      if (typeof DB !== 'undefined') {
+        await DB.savePartnerRequest(req);
+      }
+      
+      setTimeout(() => {
       const originalText = btn.innerHTML;
       
       btn.innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite;">sync</span> Processing...';
@@ -202,7 +226,7 @@
             <p style="color:var(--text-sub);">Thank you for applying. Our partner relations team will review your profile and contact you within 48 hours.</p>
           </div>
         `;
-      }, 1500);
+      }, 500);
     });
   </script>
 </body>
