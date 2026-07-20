@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=1200">
   <title>Admin Dashboard — Hunt N' Hire</title>
   <meta name="description" content="Secure internal administration panel for managing candidate applications, recruiter registrations, and data exports.">
   
@@ -347,10 +347,12 @@
                 <div style="font-size:13px; font-weight:500;">${p.phone}</div>
                 <div style="font-size:12px; color:var(--text-sub);">${p.email}</div>
               </td>
-              <td><span style="font-size:13px; font-weight:600; color:var(--navy);">${p.experience}</span></td>
               <td>
-                <div style="font-size:12px;"><strong>Sectors:</strong> ${p.specialties}</div>
-                <div style="font-size:12px; color:var(--text-sub);"><strong>Channels:</strong> ${p.channels}</div>
+                <div style="font-size:12px;"><strong>Exp:</strong> ${p.hasExp === 'Yes' ? p.expDetails || 'Yes' : 'No'}</div>
+              </td>
+              <td>
+                <div style="font-size:12px;"><strong>Edu:</strong> ${p.education || 'N/A'}</div>
+                <div style="font-size:12px; color:var(--text-sub);"><strong>English:</strong> ${p.english || 'N/A'}</div>
               </td>
               <td>
                 <button class="btn btn-secondary" onclick="deleteRecord('partner', ${p.id})" style="padding:6px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg); border-radius:5px;" aria-label="Delete">
@@ -426,7 +428,7 @@
       } else {
         data = DB.getPartnerRequests();
         filename = "hnh_recruiters_export.csv";
-        csvContent += "Date Registered,Name,Phone,Email,Experience,Preferred Sectors,Sourcing Channels,Pitch Notes\n";
+        csvContent += "Date Registered,Name,Phone,Email,Experience,Education,English,LinkedIn,Pitch Notes\n";
 
         data.forEach(p => {
           const row = [
@@ -434,9 +436,10 @@
             p.name,
             p.phone,
             p.email,
-            p.experience,
-            p.specialties,
-            p.channels.replace(/,/g, ' '),
+            p.hasExp === 'Yes' ? p.expDetails || 'Yes' : 'No',
+            p.education || '',
+            p.english || '',
+            p.linkedin || '',
             p.message ? p.message.replace(/,/g, ' ') : ''
           ].map(v => `"${v}"`).join(",");
           csvContent += row + "\n";
