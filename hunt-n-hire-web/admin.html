@@ -373,16 +373,18 @@
       // Automatic Jobs Migration
       let jobs = await DB.getJobs();
       if (jobs.length === 0 && typeof JOBS_DATA !== 'undefined' && JOBS_DATA.length > 0) {
-        if(confirm("Jobs database is empty. Do you want to automatically migrate " + JOBS_DATA.length + " jobs from the old spreadsheet to Firebase?")) {
-          document.body.style.cursor = "wait";
-          for (let j of JOBS_DATA) {
-            j.category = 'Call Center';
-            await DB.saveJob(j);
-          }
-          document.body.style.cursor = "default";
-          alert("Migration complete! Jobs are now live on Firebase.");
-          jobs = await DB.getJobs();
+        document.body.style.cursor = "wait";
+        const btnJobs = document.getElementById('tab-jobs-btn');
+        if (btnJobs) btnJobs.innerHTML = `Migrating...`;
+        
+        for (let j of JOBS_DATA) {
+          j.category = 'Call Center';
+          await DB.saveJob(j);
         }
+        
+        document.body.style.cursor = "default";
+        alert("Migration complete! Jobs are now live on Firebase.");
+        jobs = await DB.getJobs();
       }
       
       const candidates = await DB.getApplications();
