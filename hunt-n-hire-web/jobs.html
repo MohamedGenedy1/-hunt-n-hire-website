@@ -102,6 +102,12 @@
         </div>
       </div>
       
+      <!-- Category Tabs -->
+      <div class="category-tabs" style="display: flex; gap: 12px; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 24px;">
+        <button id="tab-callcenter" class="btn btn-primary" onclick="setJobCategory('Call Center')">BPO & Call Center</button>
+        <button id="tab-realestate" class="btn btn-secondary" onclick="setJobCategory('Real Estate')">Real Estate</button>
+      </div>
+
       <!-- Job Search Details Header -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <div class="jobs-counter" id="jobs-counter">Loading vacancies...</div>
@@ -274,7 +280,6 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="styles/jobs_data.js"></script>
   <script src="scripts/hnh.js"></script>
   
   <script>
@@ -288,9 +293,16 @@
     };
 
     let cvFileMetadata = { name: '', size: '', base64: '' };
+    
+    let JOBS_DATA = [];
+    let currentCategory = 'Call Center';
 
     // Initialize job search
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.getElementById('jobs-counter').innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite; vertical-align: middle;">sync</span> Loading...';
+      
+      JOBS_DATA = await DB.getJobs();
+      
       // Check query params for quick filters (e.g. jobs.html?filter=german)
       const params = new URLSearchParams(window.location.search);
       const languageParam = params.get('filter');
@@ -299,9 +311,18 @@
       }
 
       populateFilterOptions();
-      renderJobs();
       setupEventListeners();
+      setJobCategory('Call Center');
     });
+
+    function setJobCategory(cat) {
+      currentCategory = cat;
+      const tCc = document.getElementById('tab-callcenter');
+      const tRe = document.getElementById('tab-realestate');
+      if(tCc) tCc.className = cat === 'Call Center' ? 'btn btn-primary' : 'btn btn-secondary';
+      if(tRe) tRe.className = cat === 'Real Estate' ? 'btn btn-primary' : 'btn btn-secondary';
+      renderJobs();
+    }
 
     function capitalize(str) {
       if (!str) return '';
