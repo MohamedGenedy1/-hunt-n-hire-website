@@ -267,7 +267,14 @@
       document.getElementById('count-jobs').textContent = jobs.length;
       const jobsTbody = document.getElementById('jobs-tbody');
       if (jobs.length === 0) {
-        jobsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No jobs found.</td></tr>`;
+        jobsTbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center; padding: 40px;">
+              <p style="margin-bottom: 16px;">No jobs found in the database.</p>
+              <button class="btn btn-primary" onclick="window.forceMigrateJobs()">Migrate Jobs from Excel</button>
+            </td>
+          </tr>
+        `;
       } else {
         jobsTbody.innerHTML = jobs.map(j => {
           const badgeClass = j.status.toLowerCase() === 'active' ? 'badge-active' : 'badge-hold';
@@ -528,6 +535,26 @@
     window.deleteJob = async function(fbId) {
       if(!confirm("Are you sure you want to delete this job permanently?")) return;
       await DB.deleteJob(fbId);
+      renderDashboardData();
+    };
+
+    window.forceMigrateJobs = async function() {
+      if (typeof JOBS_DATA === 'undefined' || JOBS_DATA.length === 0) {
+        alert("Error: Legacy jobs data not found.");
+        return;
+      }
+      document.body.style.cursor = "wait";
+      const btn = event.target;
+      btn.innerHTML = 'Migrating... Please wait.';
+      btn.disabled = true;
+      
+      for (let j of JOBS_DATA) {
+        j.category = 'Call Center';
+        await DB.saveJob(j);
+      }
+      
+      document.body.style.cursor = "default";
+      alert("Migration complete! Jobs are now live on Firebase.");
       renderDashboardData();
     };
 
