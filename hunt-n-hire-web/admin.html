@@ -263,34 +263,6 @@
       checkAuthentication();
       setupPasscodeForm();
       setupTabs();
-      // 3. Render Jobs Table
-      document.getElementById('count-jobs').textContent = jobs.length;
-      const jobsTbody = document.getElementById('jobs-tbody');
-      if (jobs.length === 0) {
-        jobsTbody.innerHTML = `
-          <tr>
-            <td colspan="5" style="text-align:center; padding: 40px;">
-              <p style="margin-bottom: 16px;">No jobs found in the database.</p>
-              <button class="btn btn-primary" onclick="window.forceMigrateJobs()">Migrate Jobs from Excel</button>
-            </td>
-          </tr>
-        `;
-      } else {
-        jobsTbody.innerHTML = jobs.map(j => {
-          const badgeClass = j.status.toLowerCase() === 'active' ? 'badge-active' : 'badge-hold';
-          return `
-            <tr>
-              <td><span class="job-badge ${badgeClass}">${j.status}</span></td>
-              <td><strong>${j.title}</strong><br><span style="font-size:12px; color:var(--text-sub);">${j.publicCompany}</span></td>
-              <td><span style="font-size:13px; font-weight:600;">${j.category || 'Call Center'}</span></td>
-              <td>${j.salaryDisplay}</td>
-              <td>
-                <button class="btn btn-secondary" onclick="deleteJob('${j.fbId}')" style="padding:4px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg);"><span class="material-icons" style="font-size:16px;">delete</span></button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
     });
 
     // Check if session authentication is already active
@@ -510,6 +482,35 @@
                 </td>
               </tr>
             ` : ''}
+          `;
+        }).join('');
+      }
+
+      // 3. Render Jobs Table
+      document.getElementById('count-jobs').textContent = jobs ? jobs.length : 0;
+      const jobsTbody = document.getElementById('jobs-tbody');
+      if (!jobs || jobs.length === 0) {
+        jobsTbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center; padding: 40px;">
+              <p style="margin-bottom: 16px;">No jobs found in the database.</p>
+              <button class="btn btn-primary" onclick="window.forceMigrateJobs()">Migrate Jobs from Excel</button>
+            </td>
+          </tr>
+        `;
+      } else {
+        jobsTbody.innerHTML = jobs.map(j => {
+          const badgeClass = j.status.toLowerCase() === 'active' ? 'badge-active' : 'badge-hold';
+          return `
+            <tr>
+              <td><span class="job-badge ${badgeClass}">${j.status}</span></td>
+              <td><strong>${j.title}</strong><br><span style="font-size:12px; color:var(--text-sub);">${j.publicCompany}</span></td>
+              <td><span style="font-size:13px; font-weight:600;">${j.category || 'Call Center'}</span></td>
+              <td>${j.salaryDisplay}</td>
+              <td>
+                <button class="btn btn-secondary" onclick="deleteJob('${j.fbId}')" style="padding:4px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg);"><span class="material-icons" style="font-size:16px;">delete</span></button>
+              </td>
+            </tr>
           `;
         }).join('');
       }
