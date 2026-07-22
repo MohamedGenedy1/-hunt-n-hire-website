@@ -460,6 +460,9 @@
       // 1. Filter jobs
       let filtered = JOBS_DATA.filter(job => {
         // Only show Active and On Hold jobs
+        const jobCat = job.category || 'Call Center';
+        if (jobCat !== currentCategory) return false;
+
         if (job.status !== 'active' && job.status !== 'on hold' && job.status !== 'on Hold') {
           return false;
         }
@@ -560,8 +563,8 @@
                 <span>${job.location.split('📍')[0].trim()}</span>
               </div>
               <div style="display:flex; gap:8px; margin-top:8px;">
-                <button class="btn btn-secondary" onclick="openDetailsModal(${job.id})" style="padding: 8px 14px; font-size:13px;">Details</button>
-                <button class="btn btn-accent" onclick="openApplyModal(${job.id})" style="padding: 8px 14px; font-size:13px;">Apply Now</button>
+                <button class="btn btn-secondary" onclick="openDetailsModal(${job.id}, '${job.fbId}')" style="padding: 8px 14px; font-size:13px;">Details</button>
+                <button class="btn btn-accent" onclick="openApplyModal(${job.id}, '${job.fbId}')" style="padding: 8px 14px; font-size:13px;">Apply Now</button>
               </div>
             </div>
           </div>
@@ -570,8 +573,8 @@
     }
 
     // Details Modal Logic
-    function openDetailsModal(id) {
-      const job = JOBS_DATA.find(j => j.id === id);
+    function openDetailsModal(id, fbId) {
+      const job = JOBS_DATA.find(j => j.id === id || j.fbId === fbId);
       if (!job) return;
 
       const modal = document.getElementById('details-modal');
@@ -643,7 +646,7 @@
 
         <div style="display:flex; justify-content:flex-end; gap:12px; border-top:1px solid var(--border); padding-top:16px;">
           <button class="btn btn-secondary" onclick="closeDetailsModal()">Close</button>
-          <button class="btn btn-primary" onclick="closeDetailsModal(); openApplyModal(${job.id})">Apply For This Job</button>
+          <button class="btn btn-primary" onclick="closeDetailsModal(); openApplyModal(${job.id}, '${job.fbId}')">Apply For This Job</button>
         </div>
       `;
 
@@ -655,8 +658,8 @@
     }
 
     // Apply Modal Logic
-    function openApplyModal(id) {
-      const job = JOBS_DATA.find(j => j.id === id);
+    function openApplyModal(id, fbId) {
+      const job = JOBS_DATA.find(j => j.id === id || j.fbId === fbId);
       if (!job) return;
 
       document.getElementById('apply-job-id').value = job.id;

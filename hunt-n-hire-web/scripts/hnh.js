@@ -102,6 +102,43 @@ if (typeof firebase !== 'undefined' && !firebase.apps.length) {
 const DB = {
   db: typeof firebase !== 'undefined' ? firebase.firestore() : null,
 
+
+  async getJobs() {
+    if (!this.db) return [];
+    try {
+      const snapshot = await this.db.collection('jobs').get();
+      return snapshot.docs.map(doc => ({ fbId: doc.id, ...doc.data() }));
+    } catch (e) {
+      console.error("Error fetching jobs", e);
+      return [];
+    }
+  },
+  
+  async saveJob(job) {
+    if (!this.db) return;
+    try {
+      job.timestamp = new Date().toISOString();
+      await this.db.collection('jobs').add(job);
+      return job;
+    } catch (e) {
+      console.error("Error saving job", e);
+    }
+  },
+  
+  async updateJob(id, data) {
+    if (!this.db) return;
+    try {
+      await this.db.collection('jobs').doc(id).update(data);
+    } catch (e) {}
+  },
+  
+  async deleteJob(id) {
+    if (!this.db) return;
+    try {
+      await this.db.collection('jobs').doc(id).delete();
+    } catch (e) {}
+  },
+
   async getApplications() {
     if (!this.db) return [];
     try {

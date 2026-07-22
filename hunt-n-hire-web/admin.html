@@ -133,7 +133,33 @@
       </div>
     </div>
 
-  </main>
+  
+      <!-- Manage Jobs Panel -->
+      <div id="panel-jobs" class="admin-panel" style="display:none;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+          <h3>Job Listings</h3>
+          <button class="btn btn-primary" onclick="openJobModal()">+ Add New Job</button>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Job Title / Company</th>
+                <th>Category</th>
+                <th>Salary</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
 
   <!-- ─── FOOTER ─── -->
   <footer class="footer" style="margin-top:100px;">
@@ -168,7 +194,63 @@
     </div>
   </footer>
 
+  
+  <!-- Job Editor Modal -->
+  <div class="modal" id="job-modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <h3 id="job-modal-title" style="margin-bottom:20px; font-family:var(--ff-display); font-size:24px;">Add New Job</h3>
+      <form id="job-form">
+        <input type="hidden" id="job-fbid">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Title</label>
+            <input type="text" id="job-title" class="form-control" required placeholder="E.g., Customer Service Rep">
+          </div>
+          <div class="form-group">
+            <label>Company / Brand Name</label>
+            <input type="text" id="job-company" class="form-control" required placeholder="E.g., Multinational Tech Leader">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="job-category" class="form-control" required>
+              <option value="Call Center">BPO & Call Center</option>
+              <option value="Real Estate">Real Estate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="job-status" class="form-control" required>
+              <option value="active">Active</option>
+              <option value="on hold">On Hold</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Salary Display</label>
+            <input type="text" id="job-salary" class="form-control" required placeholder="E.g., EGP 15,000">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="job-location" class="form-control" required placeholder="E.g., Maadi, Cairo">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Experience Required</label>
+          <input type="text" id="job-exp" class="form-control" required placeholder="E.g., 6 months BPO experience">
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeJobModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="job-save-btn">Save Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Scripts -->
+  <script src="scripts/jobs_data.js"></script>
   <script src="scripts/hnh.js"></script>
   
   <script>
@@ -179,6 +261,27 @@
       checkAuthentication();
       setupPasscodeForm();
       setupTabs();
+      // 3. Render Jobs Table
+      document.getElementById('count-jobs').textContent = jobs.length;
+      const jobsTbody = document.getElementById('jobs-tbody');
+      if (jobs.length === 0) {
+        jobsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No jobs found.</td></tr>`;
+      } else {
+        jobsTbody.innerHTML = jobs.map(j => {
+          const badgeClass = j.status.toLowerCase() === 'active' ? 'badge-active' : 'badge-hold';
+          return `
+            <tr>
+              <td><span class="job-badge ${badgeClass}">${j.status}</span></td>
+              <td><strong>${j.title}</strong><br><span style="font-size:12px; color:var(--text-sub);">${j.publicCompany}</span></td>
+              <td><span style="font-size:13px; font-weight:600;">${j.category || 'Call Center'}</span></td>
+              <td>${j.salaryDisplay}</td>
+              <td>
+                <button class="btn btn-secondary" onclick="deleteJob('${j.fbId}')" style="padding:4px; color:var(--danger); border-color:var(--danger-bg); background:var(--danger-bg);"><span class="material-icons" style="font-size:16px;">delete</span></button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
     });
 
     // Check if session authentication is already active
@@ -229,6 +332,16 @@
 
     // Tab toggling logic inside Workspace
     function setupTabs() {
+      const btnJobs = document.getElementById('tab-jobs-btn');
+      const panelJobs = document.getElementById('panel-jobs');
+      if(btnJobs) btnJobs.addEventListener('click', () => {
+        btnJobs.classList.add('active');
+        document.getElementById('tab-candidates-btn').classList.remove('active');
+        document.getElementById('tab-partners-btn').classList.remove('active');
+        panelJobs.style.display = 'block';
+        document.getElementById('panel-candidates').style.display = 'none';
+        document.getElementById('panel-partners').style.display = 'none';
+      });
       const btnCand = document.getElementById('tab-candidates-btn');
       const btnPart = document.getElementById('tab-partners-btn');
       const panelCand = document.getElementById('panel-candidates');
@@ -236,6 +349,8 @@
 
       btnCand.addEventListener('click', () => {
         btnCand.classList.add('active');
+        if(document.getElementById('tab-jobs-btn')) document.getElementById('tab-jobs-btn').classList.remove('active');
+        if(document.getElementById('panel-jobs')) document.getElementById('panel-jobs').style.display = 'none';
         btnPart.classList.remove('active');
         panelCand.style.display = 'block';
         panelPart.style.display = 'none';
@@ -243,6 +358,8 @@
 
       btnPart.addEventListener('click', () => {
         btnPart.classList.add('active');
+        if(document.getElementById('tab-jobs-btn')) document.getElementById('tab-jobs-btn').classList.remove('active');
+        if(document.getElementById('panel-jobs')) document.getElementById('panel-jobs').style.display = 'none';
         btnCand.classList.remove('active');
         panelPart.style.display = 'block';
         panelCand.style.display = 'none';
@@ -251,6 +368,21 @@
 
     // Render Data from Firebase
     async function renderDashboardData() {
+      // Automatic Jobs Migration
+      let jobs = await DB.getJobs();
+      if (jobs.length === 0 && typeof JOBS_DATA !== 'undefined' && JOBS_DATA.length > 0) {
+        if(confirm("Jobs database is empty. Do you want to automatically migrate " + JOBS_DATA.length + " jobs from the old spreadsheet to Firebase?")) {
+          document.body.style.cursor = "wait";
+          for (let j of JOBS_DATA) {
+            j.category = 'Call Center';
+            await DB.saveJob(j);
+          }
+          document.body.style.cursor = "default";
+          alert("Migration complete! Jobs are now live on Firebase.");
+          jobs = await DB.getJobs();
+        }
+      }
+      
       const candidates = await DB.getApplications();
       const partners = await DB.getPartnerRequests();
 
@@ -388,6 +520,63 @@
     };
 
     // Action: Delete Records
+    
+    window.deleteJob = async function(fbId) {
+      if(!confirm("Are you sure you want to delete this job permanently?")) return;
+      await DB.deleteJob(fbId);
+      renderDashboardData();
+    };
+
+
+    window.openJobModal = function(fbId = null) {
+      document.getElementById('job-form').reset();
+      document.getElementById('job-fbid').value = '';
+      document.getElementById('job-modal-title').textContent = fbId ? 'Edit Job' : 'Add New Job';
+      
+      // If editing, we would fetch the job by ID, but for now we just handle Add.
+      if (fbId) {
+        alert("Editing is not fully implemented yet in this interface. Creating new job instead.");
+      }
+      
+      document.getElementById('job-modal').classList.add('active');
+    };
+
+    window.closeJobModal = function() {
+      document.getElementById('job-modal').classList.remove('active');
+    };
+
+    document.getElementById('job-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('job-save-btn');
+      btn.innerHTML = 'Saving...';
+      btn.disabled = true;
+
+      const jobData = {
+        title: document.getElementById('job-title').value,
+        publicCompany: document.getElementById('job-company').value,
+        category: document.getElementById('job-category').value,
+        status: document.getElementById('job-status').value,
+        salaryDisplay: document.getElementById('job-salary').value,
+        location: document.getElementById('job-location').value,
+        experience: document.getElementById('job-exp').value,
+        // Default empty values for the rest to prevent errors in jobs.html render
+        language: 'N/A', workType: 'N/A', education: 'N/A', notes: ''
+      };
+
+      const fbId = document.getElementById('job-fbid').value;
+      if (fbId) {
+        await DB.updateJob(fbId, jobData);
+      } else {
+        await DB.saveJob(jobData);
+      }
+
+      btn.innerHTML = 'Save Job';
+      btn.disabled = false;
+      closeJobModal();
+      renderDashboardData();
+    });
+
+
     window.deleteRecord = function(type, id) {
       if (!confirm(`Are you sure you want to delete this ${type} record?`)) return;
 
